@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insert title here</title>
+<script src="jQuery/jquery-1.12.3.js"></script>
+<script>
+
+// move forward (images slide in left direction);
+function moveForward(current, next) {
+	next.css("marginLeft", "100%");
+	current.animate( {marginLeft: "-100%"}, "slow");
+	next.animate( {marginLeft: "0"}, "slow");
+}
+
+//move backward (images slide in right direction);
+function moveBackward(current, next) {
+	next.css("marginLeft", "-100%");
+	current.animate( {marginLeft: "100%"}, "slow");
+	next.animate( {marginLeft: "0"}, "slow");
+}
+
+function toggleActiveClasses(current, next) {
+	current.toggleClass("active");
+	next.toggleClass("active");
+}
+
+function animateFactory( i ) {
+	return function() {
+		var activeImage = $( "div.s_imgdiv.active" );
+		var activeButton = $( "button.s_dots.active" );
+		var nextImage = $( "div#s_img_" + i );
+		var nextButton = $( "[name=s_" + i + "]" );
+		// don't move when the new images is the old one
+		if ( !$( activeImage ).is( nextImage ) ) {
+			// do we move forward ?
+			if ( $( activeImage ).nextAll().is( nextImage ) ) {
+				moveForward(activeImage, nextImage);
+			} else { // we move backward !
+				moveBackward(activeImage, nextImage);
+			}
+			
+			toggleActiveClasses(activeImage, nextImage);
+			toggleActiveClasses(activeButton, nextButton);
+		}
+	}
+}
+
+$( document ).ready(function() {	
+	// set click functions for buttons.
+	for (i = 0; i < 4; i++) {
+		$( "[name=s_" + i + "]" ).click( animateFactory( i ) );
+	};
+	
+	// setup left/right menu fade	
+	$( "#s_wrapper" ).hover( function() {
+		$( "#s_left_nav_wrapper" ).fadeIn();
+		$( "#s_right_nav_wrapper" ).fadeIn();
+	}, function() {
+		$( "#s_left_nav_wrapper" ).fadeOut();
+		$( "#s_right_nav_wrapper" ).fadeOut();
+	} );
+	
+	// fade out left/right menu at startup
+	$( "#s_left_nav_wrapper" ).fadeOut();
+	$( "#s_right_nav_wrapper" ).fadeOut();
+	
+	$( "#s_left_nav_wrapper" ).click( function() {
+		var activeImage = $( "div.s_imgdiv.active" );
+		var activeButton = $( "button.s_dots.active" );
+		// Do we hit the endge ?
+		if ( activeImage.prev().length > 0 ) {
+			moveBackward(activeImage, activeImage.prev() );
+			toggleActiveClasses(activeImage, activeImage.prev() );
+			toggleActiveClasses(activeButton, activeButton.prev() );
+		} else {
+			//this will select the last (next) element in the chain
+			var nextImage = $( "div.s_imgdiv" ).last();
+			var nextButton = $( "button.s_dots" ).last();
+			moveBackward( activeImage, nextImage );
+			toggleActiveClasses(activeImage, nextImage );
+			toggleActiveClasses(activeButton, nextButton );
+		}
+	} );
+	
+	$( "#s_right_nav_wrapper" ).click( function() {
+		var activeImage = $( "div.s_imgdiv.active" );
+		var activeButton = $( "button.s_dots.active" );
+		// Do we hit the endge ?
+		if ( activeImage.next().length > 0 ) {
+			moveForward(activeImage, activeImage.next() );
+			toggleActiveClasses(activeImage, activeImage.next() );
+			toggleActiveClasses(activeButton, activeButton.next() );
+		} else {
+			//this will select the first (next) element in the chain
+			var nextImage = $( "div.s_imgdiv" ).first();
+			var nextButton = $( "button.s_dots" ).first();
+			moveForward( activeImage, nextImage );
+			toggleActiveClasses(activeImage, nextImage );
+			toggleActiveClasses(activeButton, nextButton );
+		}
+	} );
+});
+</script>
+<style type="text/css">
+html, body, div, img, button {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	background-color: transparent;
+}
+
+#test { visibility: hidden;}
+
+div#s_wrapper {
+	position: relative;
+	width: 100vw;
+	height: 30vw;
+	background-color: rgba(0,0,0,0.1);
+	overflow: hidden;
+}
+/*
+@media screen and (max-width: 570px) {
+	div#s_wrapper {height: 200px;}
+	#test { visibility: visible; }
+}
+
+@media screen and (max-width: 360px) {
+	div#s_wrapper {height: 150px;}
+	#test { visibility: hidden; }
+}
+*/
+@media (min-width: 950px) { /* breite Browserfenster */
+ }
+@media (min-width: 450px) and (max-width: 950px) {
+   /* Darstellung auf Netbooks */
+   	div#s_left_nav_wrapper, div#s_right_nav_wrapper {
+		width: 5vw !important;
+	}
+   } 
+@media (max-width: 450px) { /* mobile Geräte */
+	div#s_left_nav_wrapper, div#s_right_nav_wrapper {
+		width: 5vw !important;
+	}
+}
+
+div#s_img_wrapper {
+	width: 100%;
+	height: auto;
+}
+
+div.s_imgdiv {
+	position: absolute;
+	background-color: red;
+	width: 100%;
+	height: auto;
+	margin-left: -100%;
+}
+
+div.s_imgdiv.active {
+	margin-left: 0;
+}
+
+div#s_img_position_wrapper {
+	position: relative;
+	width: 100%;
+	height: auto;
+}
+
+div.s_imgdiv img {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	bottom: -30vw;
+}
+
+div#s_left_nav_wrapper, div#s_right_nav_wrapper {
+	position: absolute;
+	width: 3.2vw;
+	height: 30vw;
+	background-color: rgba(0,0,0,0.2);
+	z-index: 9999;
+	cursor: pointer;
+	padding: 0 5px;
+	line-height: 30vw;
+}
+
+div#s_left_nav_wrapper {
+	left: 0;
+	border-right: 4px solid rgba(0,0,0,0.3);
+}
+
+div#s_right_nav_wrapper {
+	right: 0
+}
+
+div#s_left_nav_wrapper img, div#s_right_nav_wrapper img {
+	-webkit-filter: opacity(40%);
+	filter: opacity(40%);
+	width: 100%;
+	height: auto;
+}
+
+
+/** buttom navigation (dots) **/
+div#s_dots_wrapper {
+	position: absolute;
+	bottom: 5px;
+	width: 100vw;
+	text-align: center;
+	z-index: 999;
+}
+
+button.s_dots {
+	border-radius: 50%;
+	width: 1.5vw;
+	height: 1.5vw;
+	border: 2px solid rgba(0,0,0,0.7);
+	background-color: rgba(0,0,0,0.5);
+	cursor: pointer;
+	box-shadow: 1px 3px 4px 0 rgba(0,0,0,0.6);
+	margin: 0 4px 0 4px;
+}
+	
+button.s_dots:hover, button.active {
+	background-color: rgba(0,0,0,0.8);
+}
+
+noscript div {
+	position: fixed;
+	top: 0;
+	button:auto;
+	width: 100%;
+	line-height: 2em;
+	z-index: 99999;
+	background-color: black;
+	color: white;
+}
+
+noscript div p {
+	line-height: 2em;
+	text-align: center;
+}
+
+/* media tests */
+#media
+
+#orientation {
+	display: table-row;
+}
+
+#portrait, #landscape {
+	display: table-cell;
+	visibility: hidden;
+}
+
+@media screen and (orientation: portrait) {
+	#portrait { visibility: visible; }
+}
+
+@media screen and (orientation: landscape) {
+	#landscape { visibility: visible; }
+}
+
+</style>
+</head>
+<body>
+<noscript>
+	<div><p>Please Enable JavaScript to view this Site.</p></div>
+</noscript>
+
+<div id="s_wrapper">
+	<div id="s_img_wrapper">
+		<div id="s_img_0" class="s_imgdiv active">
+			<div id="s_img_position_wrapper">
+ 			  <img src="images/nature_mountain.png" />
+ 			</div>
+		</div>
+		<div id="s_img_1" class="s_imgdiv">
+ 			<img src="images/nature_panorama.png" />
+		</div>
+		<div id="s_img_2" class="s_imgdiv">
+ 			<img src="images/panorama_mountains_peaks.png" />
+		</div>
+		<div id="s_img_3" class="s_imgdiv">
+ 			<img src="images/wonderfully_wild_faroe_isl.png" />
+		</div>
+	</div>
+	<div id="s_left_nav_wrapper">
+			<img src="images/arrow_left.png" />
+	</div>
+	<div id="s_right_nav_wrapper">
+		<img src="images/arrow_right.png" />
+	</div>	
+	<div id="s_dots_wrapper">
+		<button class="s_dots active" name="s_0"></button>
+		<button class="s_dots" name="s_1"></button>
+		<button class="s_dots" name="s_2"></button>
+		<button class="s_dots "name="s_3"></button>
+	</div>
+</div>
+<div id="media">
+	<div id="orientation">
+		<span id="portrait">portrait</span>
+		<span id="landscape">landscape</span>
+	</div>
+</div>
+</body>
+</html>
