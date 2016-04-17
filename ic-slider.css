@@ -1,0 +1,155 @@
+/*
+ * 
+ * usage:
+ * - images scale according to the width/height of #ic_slider_wrapper.
+ * - if you want to change the ratio, you will need new images
+ * - when you change the height of #ic_slider_wrapper, change the height
+ *   of all wrappers and the line-height for the left-/right nav. 
+ * 
+ *  
+ */
+
+/* TODO: fix spam click messup
+ * TODO: check for accessability
+ * TODO: improve wp plugin
+ * TODO: implement text layer */
+
+div#ic_slider_wrapper, div#ic_slider_left_nav,
+div#ic_slider_right_nav {
+	height: 27vw;
+}
+
+div#ic_slider_left_nav,
+div#ic_slider_right_nav {
+	line-height: 27vw;
+}
+
+
+div#ic_slider_wrapper {
+	position: relative;
+	margin: 0 2em;
+	overflow: hidden;
+	box-shadow: 2px 2px 6px 0 rgba(0,0,0,0.4),0 2px 10px 0 rgba(0,0,0,0.4);
+	background-color: rgb(220,220,220);
+}
+
+/*
+@media screen and (max-width: 570px) {
+	div#ic_slider_wrapper {height: 200px;}
+	#test { visibility: visible; }
+}
+
+@media screen and (max-width: 360px) {
+	div#ic_slider_wrapper {height: 150px;}
+	#test { visibility: hidden; }
+}
+*/
+@media (min-width: 950px) { /* breite Browserfenster */
+ }
+@media (min-width: 450px) and (max-width: 950px) {
+   /* Darstellung auf Netbooks */
+   	div#ic_slider_left_nav, div#ic_slider_right_nav {
+		width: 5vw !important;
+	}
+   } 
+@media (max-width: 450px) { /* mobile Geräte */
+	div#ic_slider_left_nav, div#ic_slider_right_nav {
+		width: 5vw !important;
+	}
+}
+
+div#ic_slider_img_wrapper {
+	width: 100%;
+	height: auto;
+}
+
+div.ic_slider_imgdiv {
+	position: absolute;
+	background-color: red;
+	width: 100%;
+	height: auto;
+	margin-left: -100%;
+}
+
+div.ic_slider_imgdiv.active {
+	margin-left: 0;
+}
+
+div#ic_slider_img_position_wrapper {
+	position: relative;
+	width: 100%;
+	height: auto;
+}
+
+div.ic_slider_imgdiv img {
+	position: absolute;
+	width: 100%;
+	height: auto;
+}
+
+div#ic_slider_left_nav, div#ic_slider_right_nav {
+	position: absolute;
+	width: 46px;
+	background-color: rgba(0,0,0,0.2);
+	z-index: 9999;
+	cursor: pointer;
+	padding: 0 5px;
+}
+
+div#ic_slider_left_nav {
+	left: 0;
+	border-right: 4px solid rgba(0,0,0,0.3);
+}
+
+div#ic_slider_right_nav {
+	right: 0
+}
+
+div#ic_slider_left_nav img, div#ic_slider_right_nav img {
+	-webkit-filter: opacity(40%);
+	filter: opacity(40%);
+	width: 100%;
+	height: auto;
+}
+
+
+/** buttom navigation (dots) **/
+div#ic_slider_dots_wrapper {
+	position: absolute;
+	bottom: 5px;
+	width: 100%;
+	text-align: center;
+	z-index: 999;
+	vertical-align: bottom;
+}
+
+button.ic_slider_dots {
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	border: 2px solid rgba(0,0,0,0.7);
+	background-color: rgba(0,0,0,0.5);
+	cursor: pointer;
+	box-shadow: 1px 3px 4px 0 rgba(0,0,0,0.6);
+	margin: 0 4px 0 4px;
+}
+	
+button.ic_slider_dots:hover, button.active {
+	background-color: rgba(0,0,0,0.8);
+}
+
+noscript div {
+	position: fixed;
+	top: 0;
+	button:auto;
+	width: 100%;
+	line-height: 2em;
+	z-index: 99999;
+	background-color: black;
+	color: white;
+}
+
+noscript div p {
+	line-height: 2em;
+	text-align: center;
+}
