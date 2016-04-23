@@ -38,12 +38,26 @@ function animateFactory(i) {
 	};
 }
 
+/*
+ * 			<button class="ic_slider_dots active" name="ic_slider_0"></button>
+			<button class="ic_slider_dots" name="ic_slider_1"></button>
+			<button class="ic_slider_dots" name="ic_slider_2"></button>
+			<button class="ic_slider_dots" name="ic_slider_3"></button>
+ * 
+ * @param {type} param
+ */
+
 jQuery(document).ready(function () {
 	// set click functions for buttons.
-	for (i = 0; i < 4; i++) {
+	var sliders = jQuery( ".ic_slider_animation_container" );
+	var buttons = jQuery( "#ic_slider_dots_wrapper" );
+	var first_run = 'active';
+	console.log( sliders.length);
+	for (i = 0; i < sliders.length; i++) {
+		buttons.append( '<button class="ic_slider_dots ' + first_run + '" name="ic_slider_' + i + '" />' );
 		jQuery("[name=ic_slider_" + i + "]").click(animateFactory(i));
-	}
-	;
+		first_run = '';
+	};
 
 	// setup left/right menu fade	
 	jQuery("#ic_slider_wrapper").hover(function () {
@@ -58,7 +72,6 @@ jQuery(document).ready(function () {
 	jQuery("#ic_slider_left_nav").fadeOut();
 	jQuery("#ic_slider_right_nav").fadeOut();
 
-/* TODO: remove image bound slider */
 	jQuery("#ic_slider_left_nav").click(function () {
 		var activeImage = jQuery(".ic_slider_animation_container.active");
 		var activeButton = jQuery("button.ic_slider_dots.active");
